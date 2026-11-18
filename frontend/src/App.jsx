@@ -389,7 +389,7 @@ function App() {
       <section className="booking-section">
         <div className="section-heading">
           <div>
-            <div className="eyebrow">RIDESYNC OPERATIONS</div>
+            <div className="eyebrow">DRIVER WORKSPACE</div>
             <h2>Driver Dashboard</h2>
           </div>
 
@@ -557,24 +557,23 @@ function App() {
         <section className="hero-section">
           <div className="hero-copy">
             <div className="eyebrow">
-              <span>✦</span> THE SMARTER WAY TO GET THERE
+              <span>✦</span> TRAIN TRACKING + STATION PICKUPS
             </div>
 
             <h1>
-              Your arrival.
+              Your train arrives.
               <br />
-              <em>Our next move.</em>
+              <em>Your ride is ready.</em>
             </h1>
 
             <p className="hero-description">
-              Your train and your cab, finally in sync.
-              RideSync coordinates your in-house cab pickup
-              with your journey.
+              Track your train and book a reliable station pickup.
+              One simple journey, from platform to destination.
             </p>
 
             <div className="hero-actions">
               <a className="primary-button" href="#journey">
-                Plan my pickup <span>↗</span>
+                Book your ride <span>↗</span>
               </a>
 
               <a className="text-button" href="#how-it-works">
@@ -655,7 +654,9 @@ function App() {
             </label>
 
             <label className="field">
-              <span>TRAIN NUMBER</span>
+              <span>
+  {journeyType === 'flight' ? 'FLIGHT NUMBER' : 'TRAIN NUMBER'}
+</span>
               <input
                 value={journey.trainNumber}
                 onChange={(event) =>
@@ -670,7 +671,9 @@ function App() {
             </label>
 
             <label className="field">
-              <span>ARRIVAL STATION</span>
+              <span>
+  {journeyType === 'flight' ? 'ARRIVAL AIRPORT' : 'ARRIVAL STATION'}
+</span>
               <input
                 value={journey.to}
                 onChange={(event) =>
@@ -721,7 +724,7 @@ function App() {
           <div className="demo-note">
             <span>ⓘ</span>
             RailRadar provides train information. The current
-            prototype uses an illustrative arrival time until
+            app uses an estimated arrival time until
             actual route ETA extraction is implemented.
           </div>
 
@@ -1018,7 +1021,7 @@ function App() {
                     <b>Ride progress</b>
                     <p>
                       Driver location is simulated for this
-                      exhibition prototype.
+                      booking experience.
                     </p>
                   </div>
                 </div>
@@ -1075,61 +1078,31 @@ function App() {
 
   return (
     <div className="ridesync-app">
-      <header className="topbar">
-        <a className="brand" href="#home">
-          <span className="brand-mark">
-            R<span>↗</span>
-          </span>
-
-          <span>
-            Ride<span className="brand-accent">Sync</span>
-            <small>YOUR JOURNEY, CONNECTED</small>
-          </span>
+      <aside className="app-sidebar">
+        <a className="brand sidebar-brand" href="#home" onClick={() => setActiveTab('passenger')}>
+          <span className="brand-mark">🚆</span>
+          <span>Ride<span className="brand-accent">Sync</span></span>
         </a>
-
-        <nav className="nav-links">
-          <button
-            type="button"
-            onClick={() => setActiveTab('passenger')}
-          >
-            Passenger
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('driver')}
-          >
-            Driver Dashboard
-          </button>
+        <div className="sidebar-label">YOUR WORKSPACE</div>
+        <nav className="sidebar-nav" aria-label="Main navigation">
+          <button className={activeTab === 'passenger' ? 'selected' : ''} onClick={() => setActiveTab('passenger')}>⌂ <span>Passenger dashboard</span></button>
+          <a href="#journey" onClick={() => setActiveTab('passenger')}>🚕 <span>Book a ride</span></a>
+          <a href="#journey" onClick={() => setActiveTab('passenger')}>▤ <span>My bookings</span></a>
+          <a href="#journey" onClick={() => setActiveTab('passenger')}>🚆 <span>Train tracker</span></a>
+          <button className={activeTab === 'driver' ? 'selected' : ''} onClick={() => setActiveTab('driver')}>▦ <span>Driver dashboard</span></button>
         </nav>
-
-        <span className="demo-pill">
-          <i /> LIVE PROTOTYPE
-        </span>
-      </header>
-
-      <main id="home">
-        {activeTab === 'passenger'
-          ? renderPassengerDashboard()
-          : renderDriverDashboard()}
-      </main>
-
-      <footer className="footer">
-        <a className="brand" href="#home">
-          <span className="brand-mark">
-            R<span>↗</span>
-          </span>
-
-          <span>
-            Ride<span className="brand-accent">Sync</span>
-            <small>YOUR JOURNEY, CONNECTED</small>
-          </span>
-        </a>
-
-        <span>Making every connection count.</span>
-
-        <span>© 2026 RideSync · Exhibition prototype</span>
-      </footer>
+        <div className="sidebar-bottom"><span className="sidebar-dot" /> Station-to-door journeys, simplified.</div>
+      </aside>
+      <div className="app-content">
+        <header className="topbar">
+          <div className="topbar-title"><strong>{activeTab === 'driver' ? 'Driver dashboard' : 'Welcome to RideSync'}</strong><small>{activeTab === 'driver' ? 'Manage your fleet and bookings' : 'Your train and cab, in one place'}</small></div>
+          <div className="topbar-right"><span className="connection-indicator">● RideSync</span><span className="profile-avatar">RS</span></div>
+        </header>
+        <main id="home">
+          {activeTab === 'passenger' ? renderPassengerDashboard() : renderDriverDashboard()}
+        </main>
+        <footer className="footer"><span>© 2026 RideSync</span><span>From platform to pickup.</span></footer>
+      </div>
     </div>
   );
 }
